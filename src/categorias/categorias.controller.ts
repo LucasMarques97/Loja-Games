@@ -1,16 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
-import { CreateCategoriaDto } from './dto/create-categoria.dto';
-import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { Categoria } from './entities/categoria.entity';
 
-@Controller('categorias')
+@Controller('/categorias')
 export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService) {}
 
-  @Post('cadastrar')
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
-    return this.categoriasService.create(createCategoriaDto);
+  @Post('/cadastrar')
+  create(@Body() Categoria: Categoria) {
+    return this.categoriasService.create(Categoria);
   }
 
   @Get()
@@ -33,8 +31,8 @@ export class CategoriasController {
 
   @Patch('/atualizar/:id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id_ct2') id_ct2: number, @Body() updateCategoriaDto: UpdateCategoriaDto) {
-    return this.categoriasService.update(id_ct2, updateCategoriaDto);
+  update(@Param('id_ct2') id_ct2: number, @Body() Categoria: Categoria) {
+    return this.categoriasService.update(Categoria);
   }
 
   @Delete(':id_ct2')

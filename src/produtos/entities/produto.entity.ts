@@ -4,6 +4,12 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'ty
 
 @Entity(({name: 'produtos'}))
 export class Produto {
+    name(name: any) {
+      throw new Error('Method not implemented.');
+    }
+    produto(produto: any) {
+      throw new Error('Method not implemented.');
+    }
   
     @PrimaryGeneratedColumn()
     id_pdt: number;
@@ -26,7 +32,7 @@ export class Produto {
     @ManyToOne(() => Usuario, (Usuarios) => Usuarios.produtos)
     Usuarios: Usuario[]
 
-    @OneToMany(() => Categoria, (Categoria) => Categoria.produtos)
+    @OneToMany(() => Categoria, (Categoria) => Categoria.produto)
     Categorias: Categoria[]
 }
 

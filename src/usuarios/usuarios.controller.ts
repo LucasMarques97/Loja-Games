@@ -1,47 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
-import { UsuariosService } from './usuarios.service';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { Controller, Get, Post, Body, Patch, Param, HttpCode, HttpStatus, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { Usuario } from './entities/usuario.entity';
-import { ParseIntPipe } from '@nestjs/common/pipes';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { UsuariosService } from './services/usuarios.service';
 
-@Controller('usuarios')
+
+@Controller('/usuarios')
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.usuariosService.create(createUsuarioDto);
-  }
-
-  @Get()
+  @UseGuards(JwtAuthGuard)
+  @Get('/todos')
   @HttpCode(HttpStatus.OK)
-  findAll() {
+  findAll():  Promise<Usuario[]> {
     return this.usuariosService.findAll();
   }
 
-  @Get(':id_user')
+  @HttpCode(HttpStatus.CREATED)
+  @Post('/cadastrar')
+  async create(@Body() usuario: Usuario): Promise<Usuario> {
+      return this.usuariosService.create(usuario);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id') id: number) {
+  findById(@Param('id', ParseIntPipe) id: number): Promise<Usuario> {
     return this.usuariosService.findById(id);
   }
 
   @Get('/nome/:nome')
   @HttpCode(HttpStatus.OK)
-    findByName(@Param('nome') nome:string): Promise<Usuario[]>{
-      return this.usuariosService.findByName(nome);
+    findByName(@Param('nome') nome:string): Promise<Usuario>{
+      return this.usuariosService.findByUsuario(nome);
     }
 
-  @Patch('/atualizar/:id')
+  @UseGuards(JwtAuthGuard)
+  @Patch('/atualizar')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id_user: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuariosService.update(id_user, updateUsuarioDto);
-  }
-
-  @Delete(':id')
-  @HttpCode(HttpStatus.OK)
-  Delete(@Param('id', ParseIntPipe) id_user: number) {
-    return this.usuariosService.delete(id_user);
-  }
+    async update(@Body() usuario: Usuario): Promise<Usuario> {
+        return this.usuariosService.update(usuario);
+    }
 }

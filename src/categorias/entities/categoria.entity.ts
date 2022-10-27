@@ -12,9 +12,9 @@ export class Categoria {
     @Column({name: "ambiente", length: 100})
     decoracao: string;
 
-    @OneToMany(() => Categoria, (categoria) => categoria.produtos, {
+    @OneToMany(() => Categoria, (categoria) => categoria.produto, {
         onDelete: "CASCADE"
     })
-    produtos: Produto[];
+    produto: Produto[];
     
 }

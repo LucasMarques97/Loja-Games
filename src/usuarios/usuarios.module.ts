@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { UsuariosService } from './usuarios.service';
 import { UsuariosController } from './usuarios.controller';
-import { usuariosProviders } from './usuarios.provider';
-import { DatabaseModule } from 'src/database/database.module';
-import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { Usuario } from './entities/usuario.entity';
+import { Bcrypt } from 'src/auth/bcrypt/bcrypt';
+import { UsuariosService } from './services/usuarios.service';
 
 @Module({
-  imports: [DatabaseModule, TypeOrmModule.forFeature([Usuario]), JwtModule.register({secret: 'hard!to-guess_secret'})],
+  imports: [TypeOrmModule.forFeature([Usuario])],
   controllers: [UsuariosController],
-  providers: [UsuariosService, ...usuariosProviders]
+  providers: [UsuariosService, Bcrypt],
+  exports: [UsuariosService],
 })
-export class usuariosModule {}
+export class UsuariosModule {}

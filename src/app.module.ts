@@ -1,21 +1,13 @@
 import { Module } from '@nestjs/common';
-/* import { AppController } from './app.controller';
-import { AppService } from './app.service'; */
 import { CategoriasModule } from './categorias/categorias.module';
-/* import { DatabaseModule } from './database/database.module'; */
-import { ProdutosModule } from './produtos/produtos.module';
 import { AuthModule } from './auth/auth.module';
-import { usuariosModule } from './usuarios/usuarios.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Categoria } from './categorias/entities/categoria.entity';
 import { Produto } from './produtos/entities/produto.entity';
 import { Usuario } from './usuarios/entities/usuario.entity';
+import { ProdutosModule } from './produtos/produtos.module';
 
-/* @Module({
-  imports: [CategoriasModule, DatabaseModule, ProdutosModule, AuthModule, usuariosModule],
-  controllers: [AppController],
-  providers: [AppService],
-}) */
 @Module({
   imports:[
     TypeOrmModule.forRoot({
@@ -29,9 +21,9 @@ import { Usuario } from './usuarios/entities/usuario.entity';
       synchronize: true,
     }),
     AuthModule,
-    ProdutosModule,
     CategoriasModule,
-    usuariosModule,
+    UsuariosModule,
+    ProdutosModule
   ],
   controllers:[],
   providers:[],
